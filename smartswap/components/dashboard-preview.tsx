@@ -76,7 +76,7 @@ export function DashboardPreview() {
           </div>
 
           {/* Dashboard content */}
-          <div className="flex min-h-[500px]">
+          <div className="flex min-h-125">
             {/* Sidebar */}
             <div className="hidden w-56 border-r border-border bg-sidebar p-4 md:block">
               <div className="mb-6 flex items-center gap-2">
