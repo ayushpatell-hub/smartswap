@@ -145,8 +145,38 @@ export default function AuthPage() {
     }
   };
 
-  const handleRegisterSendOtp = async () => {
+const handleRegisterSendOtp = async () => {
     if (!regValid) return;
+    setLoading(true);
+    setMessage("");
+
+    // Check if phone already exists
+    const { data: phoneCheck } = await supabase
+      .from("user")
+      .select("Phone")
+      .eq("Phone", reg.phone)
+      .single();
+
+    if (phoneCheck) {
+      setMessage("❌ This phone number is already registered. Please Sign In.");
+      setLoading(false);
+      return;
+    }
+
+    // Check if email already exists
+    const { data: emailCheck } = await supabase
+      .from("user")
+      .select("Email")
+      .eq("Email", reg.email)
+      .single();
+
+    if (emailCheck) {
+      setMessage("❌ This email is already registered. Please Sign In.");
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
     await sendOtp(reg.phone);
     setScreen("register-otp");
   };
@@ -157,14 +187,63 @@ export default function AuthPage() {
     if (ok) {
       await saveUser();
       setMessage("✅ Account created!");
+      setOtpValue("");
       setTimeout(() => goHome(), 800);
     }
   };
 
   const handleLoginSendOtp = async () => {
     if (!loginValid) return;
-    const phone = loginMethod === "phone" ? loginPhone : loginEmail;
-    await sendOtp(loginMethod === "phone" ? loginPhone : "");
+    setLoading(true);
+    setMessage("");
+
+    if (loginMethod === "phone") {
+      // Check if phone exists
+      const { data: phoneCheck } = await supabase
+        .from("user")
+        .select("Phone")
+        .eq("Phone", loginPhone)
+        .single();
+
+      if (!phoneCheck) {
+        setMessage("❌ No account found with this number. Please Register first.");
+        setLoading(false);
+        return;
+      }
+    }
+
+    if (loginMethod === "gmail") {
+      // Check if email exists
+      const { data: emailCheck } = await supabase
+        .from("user")
+        .select("Email")
+        .eq("Email", loginEmail)
+        .single();
+
+      if (!emailCheck) {
+        setMessage("❌ No account found with this email. Please Register first.");
+        setLoading(false);
+        return;
+      }
+
+      // Get phone linked to this email for OTP
+      const { data: userData } = await supabase
+        .from("user")
+        .select("Phone")
+        .eq("Email", loginEmail)
+        .single();
+
+      if (userData?.Phone) {
+        setLoginPhone(userData.Phone);
+        setLoading(false);
+        await sendOtp(userData.Phone);
+        setScreen("login-otp");
+        return;
+      }
+    }
+
+    setLoading(false);
+    await sendOtp(loginPhone);
     setScreen("login-otp");
   };
 
@@ -173,6 +252,7 @@ export default function AuthPage() {
     const ok = await verifyOtp(loginPhone, otpValue);
     if (ok) {
       setMessage("✅ Logged in!");
+      setOtpValue("");
       setTimeout(() => goHome(), 800);
     }
   };

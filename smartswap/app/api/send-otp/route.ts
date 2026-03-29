@@ -1,23 +1,33 @@
-import { NextRequest, NextResponse } from "next/server";
-import twilio from "twilio";
+import { NextResponse } from "next/server"
+import twilio from "twilio"
 
 const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+  process.env.TWILIO_ACCOUNT_SID!,
+  process.env.TWILIO_AUTH_TOKEN!
+)
 
-export async function POST(req: NextRequest) {
-  const { phone } = await req.json();
+export async function POST(req: Request) {
   try {
-    await client.verify.v2
+    const { phone } = await req.json()
+
+    if (!phone) {
+      return NextResponse.json({ error: "Phone number required" }, { status: 400 })
+    }
+
+    // Format to E.164 for India
+    const formatted = phone.startsWith("+") ? phone : `+91${phone.replace(/\s/g, "")}`
+
+    const verification = await client.verify.v2
       .services(process.env.TWILIO_VERIFY_SID!)
       .verifications.create({
-        to: `+91${phone}`,
+        to: formatted,
         channel: "sms",
-      });
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ success: false, error }, { status: 500 });
+      })
+
+    return NextResponse.json({ success: true, status: verification.status })
+
+  } catch (error: any) {
+    console.error("Twilio Error:", error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

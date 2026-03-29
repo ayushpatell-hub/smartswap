@@ -1,40 +1,44 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import SplashScreen from "@/components/splash-screen";
-import { Navbar } from "@/components/navbar";
-import {HeroSection} from "@/components/hero-section";
-import {StatsBanner} from "@/components/stats-banner";
-import {Footer} from "@/components/footer";
+import { useState, useEffect } from "react"
+import { Navbar } from "@/components/navbar"
+import { HeroSection } from "@/components/hero-section"
+import { StatsBanner } from "@/components/stats-banner"
+import { Footer } from "@/components/footer"
+import SplashScreen from "@/components/splash-screen"
 
 export default function Home() {
-  const [showSplash, setShowSplash] = useState(false);
-  const router = useRouter();
+  const [showSplash, setShowSplash] = useState(false)
 
   useEffect(() => {
-    const visited = sessionStorage.getItem("visited");
+    const visited = sessionStorage.getItem("visited")
     if (!visited) {
-      setShowSplash(true);
+      setShowSplash(true)
     }
-  }, []);
+  }, [])
 
   const handleSplashDone = () => {
-    sessionStorage.setItem("visited", "true");
-    setShowSplash(false);
-    router.push("/auth");
-  };
-
-  if (showSplash) {
-    return <SplashScreen onDone={handleSplashDone} />;
+    sessionStorage.setItem("visited", "true")
+    setShowSplash(false)
   }
 
   return (
-    <main>
-      <Navbar />
-      <HeroSection />
-      <StatsBanner />
-      <Footer />
-    </main>
-  );
+    <>
+      {showSplash && <SplashScreen onDone={handleSplashDone} />}
+      <div
+        className="min-h-screen bg-background"
+        style={{
+          opacity: showSplash ? 0 : 1,
+          transition: "opacity 0.6s ease-in-out",
+        }}
+      >
+        <Navbar />
+        <main>
+          <HeroSection />
+          <StatsBanner />
+        </main>
+        <Footer />
+      </div>
+    </>
+  )
 }
