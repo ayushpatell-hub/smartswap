@@ -45,11 +45,13 @@ export function Navbar() {
         </nav>
 
         {/* Sign In */}
-        <div className="hidden items-center lg:flex">
-          <Button className="bg-white text-black font-semibold hover:bg-white/90">
-            Sign In
-          </Button>
-        </div>
+<div className="hidden items-center lg:flex">
+  <a href="/auth">
+    <Button className=" bg-white text-black font-semibold hover:bg-white/90">
+      Sign In
+    </Button>
+  </a>
+</div>
 
         {/* Mobile Menu */}
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -71,9 +73,11 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Button className="mt-4 bg-white text-black font-semibold hover:bg-white/90">
-                Sign In
-              </Button>
+              <Link href="/auth">
+                <Button className="mt-4 bg-white text-black font-semibold hover:bg-white/90">
+                  Sign In
+                </Button>
+              </Link>
             </nav>
           </SheetContent>
         </Sheet>
