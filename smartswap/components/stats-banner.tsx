@@ -9,15 +9,13 @@ const stats = [
 
 export function StatsBanner() {
   return (
-    <section className="bg-primary py-12">
+    <section className="py-12" style={{ background: "linear-gradient(135deg, #1565c0 0%, #1976d2 50%, #0d47a1 100%)" }}>
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
           {stats.map((stat, i) => (
             <div key={i} className="text-center">
-              <p className="text-3xl font-bold text-primary-foreground lg:text-4xl">
-                {stat.value}
-              </p>
-              <p className="mt-1 text-sm text-primary-foreground/80">{stat.label}</p>
+              <p className="text-3xl font-bold text-white lg:text-4xl">{stat.value}</p>
+              <p className="mt-1 text-sm text-blue-100">{stat.label}</p>
             </div>
           ))}
         </div>

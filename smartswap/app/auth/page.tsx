@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -259,8 +258,8 @@ const handleRegisterSendOtp = async () => {
 
   return (
     <div className="min-h-screen bg-[#080c14] flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
-      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-yellow-400/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-80px] right-1/4 w-[350px] h-[350px] bg-yellow-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-100px left-1/2 -translate-x-1/2 w-500px h-500px bg-yellow-400/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-80px right-1/4 w-350px h-350px bg-yellow-500/5 rounded-full blur-3xl pointer-events-none" />
 
       {[0,1,2,3,4].map((i) => (
         <span key={i} className="absolute text-yellow-400/10 font-bold pointer-events-none select-none"
@@ -271,7 +270,7 @@ const handleRegisterSendOtp = async () => {
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-1">
-            <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-linear-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
               <span className="text-black font-bold text-sm">₹</span>
             </div>
             <span className="text-white font-bold text-2xl tracking-wide">Smart<span className="text-yellow-400">Swap</span></span>
@@ -306,7 +305,7 @@ const handleRegisterSendOtp = async () => {
               <div>
                 <label className="text-gray-300 text-sm font-medium block mb-1.5">Phone Number</label>
                 <div className="flex gap-2">
-                  <div className="bg-[#1a2235] border border-white/10 rounded-xl px-3 flex items-center text-gray-300 text-sm min-w-[72px] justify-center">🇮🇳 +91</div>
+                  <div className="bg-[#1a2235] border border-white/10 rounded-xl px-3 flex items-center text-gray-300 text-sm min-w-72px justify-center">🇮🇳 +91</div>
                   <input type="tel" maxLength={10} placeholder="10-digit number" value={reg.phone}
                     onChange={(e) => setReg({ ...reg, phone: e.target.value.replace(/\D/g, "") })}
                     className="flex-1 bg-[#1a2235] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-yellow-400/50 transition-all" />
@@ -399,7 +398,7 @@ const handleRegisterSendOtp = async () => {
                 <div>
                   <label className="text-gray-300 text-sm font-medium block mb-1.5">Phone Number</label>
                   <div className="flex gap-2">
-                    <div className="bg-[#1a2235] border border-white/10 rounded-xl px-3 flex items-center text-gray-300 text-sm min-w-[72px] justify-center">🇮🇳 +91</div>
+                    <div className="bg-[#1a2235] border border-white/10 rounded-xl px-3 flex items-center text-gray-300 text-sm min-w-72px justify-center">🇮🇳 +91</div>
                     <input type="tel" maxLength={10} placeholder="10-digit number" value={loginPhone}
                       onChange={(e) => setLoginPhone(e.target.value.replace(/\D/g, ""))}
                       className="flex-1 bg-[#1a2235] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-yellow-400/50 transition-all" />

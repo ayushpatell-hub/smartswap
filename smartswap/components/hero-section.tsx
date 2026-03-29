@@ -17,22 +17,15 @@ const FLOATING_NOTES = [
 
 function RupeeNote({ x, y, rotate, delay, scale }: { x: number; y: number; rotate: number; delay: number; scale: number }) {
   return (
-    <div
-      className="absolute pointer-events-none"
-      style={{
-        left: `${x}%`,
-        top: `${y}%`,
-        transform: `rotate(${rotate}deg) scale(${scale})`,
-        animation: `floatNote 6s ease-in-out infinite`,
-        animationDelay: `${delay}s`,
-        opacity: 0.4,
-      }}
-    >
-      <div
-        className="flex items-center justify-center rounded-xl border border-yellow-500/30 bg-black/60 shadow-lg backdrop-blur-sm"
-        style={{ width: 72, height: 44 }}
-      >
-        <span className="text-yellow-400 font-bold text-xl">₹</span>
+    <div className="absolute pointer-events-none" style={{
+      left: `${x}%`, top: `${y}%`,
+      transform: `rotate(${rotate}deg) scale(${scale})`,
+      animation: `floatNote 6s ease-in-out infinite`,
+      animationDelay: `${delay}s`, opacity: 0.4,
+    }}>
+      <div className="flex items-center justify-center rounded-xl shadow-lg backdrop-blur-sm"
+        style={{ width: 72, height: 44, background: "rgba(33,150,243,0.12)", border: "1px solid rgba(33,150,243,0.25)" }}>
+        <span className="font-bold text-xl text-blue-400">₹</span>
       </div>
     </div>
   )
@@ -41,48 +34,30 @@ function RupeeNote({ x, y, rotate, delay, scale }: { x: number; y: number; rotat
 export function HeroSection() {
   const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  useEffect(() => { setMounted(true) }, [])
 
   return (
-    <section className="relative min-h-screen overflow-hidden flex flex-col">
+    <section className="relative min-h-screen overflow-hidden flex flex-col bg-black dark:bg-black"
+      style={{ background: "var(--background)" }}>
 
-      {/* Dark background */}
-      <div className="absolute inset-0 bg-[#111111]" />
-
-      {/* Coin glow effect in center */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_50%_50%,rgba(180,130,30,0.25)_0%,rgba(120,80,10,0.12)_40%,transparent_70%)]" />
-
-      {/* Coin circle visual */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <div
-          className="rounded-full opacity-20"
-          style={{
-            width: 500,
-            height: 300,
-            background: "radial-gradient(ellipse, rgba(200,160,30,0.6) 0%, rgba(150,100,10,0.3) 50%, transparent 80%)",
-            filter: "blur(40px)",
-          }}
-        />
-      </div>
-
-      {/* Subtle grid */}
+      {/* Grid */}
       <div className="absolute inset-0 opacity-10">
-        <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+        <svg className="h-full w-full">
           <defs>
             <pattern id="hero-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#2196f3" strokeWidth="0.6" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#hero-grid)" />
         </svg>
       </div>
 
-      {/* Floating ₹ notes */}
-      {mounted && FLOATING_NOTES.map((note, i) => (
-        <RupeeNote key={i} {...note} />
-      ))}
+      {/* Glow */}
+      <div className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(33,150,243,0.12) 0%, transparent 70%)" }} />
+
+      {/* Floating notes */}
+      {mounted && FLOATING_NOTES.map((note, i) => <RupeeNote key={i} {...note} />)}
 
       <style>{`
         @keyframes floatNote {
@@ -92,73 +67,64 @@ export function HeroSection() {
         }
       `}</style>
 
-      {/* Main content */}
+      {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 pt-24 pb-8 text-center">
 
-        {/* Top label */}
-        <p className="mb-4 text-sm font-medium text-white/60 tracking-widest uppercase">
-          Revolutionize Your Financial Transactions
-        </p>
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium"
+          style={{ background: "rgba(33,150,243,0.1)", border: "1px solid rgba(33,150,243,0.3)", color: "#60a5fa" }}>
+          <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
+          Trusted Fintech Platform
+        </div>
 
-        {/* Heading */}
-        <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl leading-tight">
+        <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl leading-tight"
+          style={{ color: "var(--foreground)" }}>
           Exchange Cash & Digital Money — Instantly, Nearby.
         </h1>
 
-        {/* Subtitle */}
-        <p className="mt-6 max-w-xl text-lg text-white/60">
+        <p className="mt-6 max-w-xl text-lg" style={{ color: "var(--muted-foreground)" }}>
           Post a request, get matched with verified users within 1km, confirm with OTP. No banks, no waiting.
         </p>
 
-        {/* Secure | Instant | Verified */}
-        <div className="mt-8 flex items-center gap-6 text-sm text-white/60">
-          <span className="flex items-center gap-1.5">
-            <Lock className="h-4 w-4 text-yellow-400" /> Secure
-          </span>
+        <div className="mt-8 flex items-center gap-6 text-sm" style={{ color: "var(--muted-foreground)" }}>
+          <span className="flex items-center gap-1.5"><Lock className="h-4 w-4 text-blue-400" /> Secure</span>
           <span className="h-4 w-px bg-white/20" />
-          <span className="flex items-center gap-1.5">
-            <Zap className="h-4 w-4 text-yellow-400" /> Instant
-          </span>
+          <span className="flex items-center gap-1.5"><Zap className="h-4 w-4 text-blue-400" /> Instant</span>
           <span className="h-4 w-px bg-white/20" />
-          <span className="flex items-center gap-1.5">
-            <CheckCircle className="h-4 w-4 text-yellow-400" /> Verified
-          </span>
+          <span className="flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-blue-400" /> Verified</span>
         </div>
 
-        {/* Trust badges */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-white/60">
-          <span className="flex items-center gap-1.5">
-            <Shield className="h-4 w-4 text-yellow-400" /> OTP Secured
-          </span>
-          <span className="flex items-center gap-1.5">
-            <BadgeCheck className="h-4 w-4 text-yellow-400" /> KYC Verified Users
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Percent className="h-4 w-4 text-yellow-400" /> 1% Platform Fee
-          </span>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm" style={{ color: "var(--muted-foreground)" }}>
+          <span className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-blue-400" /> OTP Secured</span>
+          <span className="flex items-center gap-1.5"><BadgeCheck className="h-4 w-4 text-blue-400" /> KYC Verified</span>
+          <span className="flex items-center gap-1.5"><Percent className="h-4 w-4 text-blue-400" /> 1% Platform Fee</span>
         </div>
 
-        {/* Two cards */}
         <div className="mt-14 grid w-full max-w-3xl grid-cols-1 gap-5 sm:grid-cols-2">
 
-          <div className="rounded-2xl border border-white/10 bg-black/60 p-6 text-left shadow-xl backdrop-blur-sm">
+          <div className="rounded-2xl p-6 text-left shadow-xl backdrop-blur-sm"
+            style={{ background: "rgba(33,150,243,0.06)", border: "1px solid rgba(33,150,243,0.2)" }}>
             <div className="flex items-center gap-3 mb-2">
-              <Store className="h-6 w-6 text-yellow-400" />
-              <h3 className="text-lg font-bold text-white">Shop to Person</h3>
+              <Store className="h-6 w-6 text-blue-400" />
+              <h3 className="text-lg font-bold" style={{ color: "var(--foreground)" }}>Shop to Person</h3>
             </div>
-            <p className="text-sm text-white/50 mb-5">Exchange cash directly with nearby shops instantly</p>
-            <button className="w-full rounded-lg bg-white text-black font-bold py-2.5 hover:bg-white/90 transition-colors">
+            <p className="text-sm mb-5" style={{ color: "var(--muted-foreground)" }}>
+              Exchange cash directly with nearby shops instantly
+            </p>
+            <button className="w-full rounded-xl py-2.5 font-bold text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20">
               Try Now
             </button>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-black/60 p-6 text-left shadow-xl backdrop-blur-sm">
+          <div className="rounded-2xl p-6 text-left shadow-xl backdrop-blur-sm"
+            style={{ background: "rgba(33,150,243,0.06)", border: "1px solid rgba(33,150,243,0.2)" }}>
             <div className="flex items-center gap-3 mb-2">
-              <Users className="h-6 w-6 text-yellow-400" />
-              <h3 className="text-lg font-bold text-white">Person to Person</h3>
+              <Users className="h-6 w-6 text-blue-400" />
+              <h3 className="text-lg font-bold" style={{ color: "var(--foreground)" }}>Person to Person</h3>
             </div>
-            <p className="text-sm text-white/50 mb-5">Send and receive cash with anyone around you</p>
-            <button className="w-full rounded-lg bg-white text-black font-bold py-2.5 hover:bg-white/90 transition-colors">
+            <p className="text-sm mb-5" style={{ color: "var(--muted-foreground)" }}>
+              Send and receive cash with anyone around you
+            </p>
+            <button className="w-full rounded-xl py-2.5 font-bold text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20">
               Try Now
             </button>
           </div>
